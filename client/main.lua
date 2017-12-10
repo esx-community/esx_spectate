@@ -149,7 +149,7 @@ end)
 
 RegisterNUICallback('kick', function(data, cb)
 	SetNuiFocus(false)
-	DropPlayer(data.id, data.reason)
+	TriggerServerEvent('esx_spectate:kick', data.id, data.reason)
 	TriggerEvent('esx_spectate:spectate')
 end)
 

@@ -6,8 +6,7 @@
 
 		let player = $('.spectate').attr('id');
 
-
-		if (target === player) {
+		if (target == player) {
 			alert("You can't spectate yourself !");
 		} else {
 			$('.spectate').fadeOut();
@@ -28,6 +27,11 @@
 		    $('.spectate').fadeOut();
 			$.post('http://esx_spectate/kick', JSON.stringify({id: target, reason: reason}));
 		}
+	});
+
+	$('.header').on('click', '#close', function(){
+		$('.spectate').fadeOut();
+		$.post('http://esx_spectate/quit');
 	});
 
 	window.addEventListener('message', function(event){

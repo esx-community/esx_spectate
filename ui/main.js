@@ -15,20 +15,6 @@
 
 	});
 
-	$('.users').on('click', '.kick', function(){
-
-		let target = $(this).data('kick');
-
-		let reason = prompt("KICK REASON", "Pseudo RP SVP");
-
-		if (reason == null || reason == "") {
-		    alert("MISSING KICK REASON")
-		} else {
-		    $('.spectate').fadeOut();
-			$.post('http://esx_spectate/kick', JSON.stringify({id: target, reason: reason}));
-		}
-	});
-
 	$('.header').on('click', '#close', function(){
 		$('.spectate').fadeOut();
 		$.post('http://esx_spectate/quit');
@@ -77,7 +63,6 @@ function populate(data){
 							'<span class="user-name">' + name + '</span>' +
 							'<span class="user-actions">' +
 								'<button class="spec" data-spectate="' + id + '">Spectate</button>' +
-								'<button class="kick" data-kick="' + id + '">KICK</button>' +
 							'</span>' +
 						'</div>';
 

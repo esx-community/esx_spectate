@@ -147,12 +147,6 @@ RegisterNUICallback('quit', function(data, cb)
 	resetNormalCamera()
 end)
 
-RegisterNUICallback('kick', function(data, cb)
-	SetNuiFocus(false)
-	TriggerServerEvent('esx_spectate:kick', data.id, data.reason)
-	TriggerEvent('esx_spectate:spectate')
-end)
-
 Citizen.CreateThread(function()
 
   	while true do

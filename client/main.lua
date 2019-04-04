@@ -1,22 +1,21 @@
+local InSpectatorMode = false
+local TargetSpectate
+local LastPosition
+local polarAngleDeg = 0
+local azimuthAngleDeg = 90
+local radius = -3.5
+local cam
+local PlayerDate = {}
+local ShowInfos = false
+local group = "user"
 ESX = nil
 
 Citizen.CreateThread(function()
 	while ESX == nil do
-	TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-	Wait(0)
+		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		Citizen.Wait(0)
 	end
 end)
-
-local InSpectatorMode	= false
-local TargetSpectate	= nil
-local LastPosition		= nil
-local polarAngleDeg		= 0;
-local azimuthAngleDeg	= 90;
-local radius			= -3.5;
-local cam 				= nil
-local PlayerDate		= {}
-local ShowInfos			= false
-local group
 
 function polar3DToWorld3D(entityPosition, radius, polarAngleDeg, azimuthAngleDeg)
 	-- convert degrees to radians
@@ -36,15 +35,16 @@ function spectate(target)
 
 	ESX.TriggerServerCallback('esx:getPlayerData', function(player)
 		if not InSpectatorMode then
-			LastPosition = GetEntityCoords(GetPlayerPed(-1))
+			LastPosition = GetEntityCoords(PlayerPedId())
 		end
 
-		local playerPed = GetPlayerPed(-1)
+		local playerPed = PlayerPedId()
 
 		SetEntityCollision(playerPed, false, false)
 		SetEntityVisible(playerPed, false)
 
 		PlayerData = player
+
 		if ShowInfos then
 			SendNUIMessage({
 				type = 'infos',
@@ -53,7 +53,6 @@ function spectate(target)
 		end
 
 		Citizen.CreateThread(function()
-
 			if not DoesCamExist(cam) then
 				cam = CreateCam('DEFAULT_SCRIPTED_CAMERA', true)
 			end
@@ -63,7 +62,6 @@ function spectate(target)
 
 			InSpectatorMode = true
 			TargetSpectate  = target
-
 		end)
 	end, target)
 
@@ -72,9 +70,9 @@ end
 function resetNormalCamera()
 	InSpectatorMode = false
 	TargetSpectate  = nil
-	local playerPed = GetPlayerPed(-1)
+	local playerPed = PlayerPedId()
 
-	SetCamActive(cam,  false)
+	SetCamActive(cam, false)
 	RenderScriptCams(false, false, 0, true, true)
 
 	SetEntityCollision(playerPed, true, true)
@@ -101,10 +99,9 @@ end
 
 Citizen.CreateThread(function()
 	while true do
-		Wait(0)
-		
+		Citizen.Wait(0)
+
 		if IsControlJustReleased(1, 163) then
-			print('triggered')
 			if group ~= "user" then
 				TriggerEvent('esx_spectate:spectate')
 			end
@@ -114,13 +111,11 @@ end)
 
 RegisterNetEvent('es_admin:setGroup')
 AddEventHandler('es_admin:setGroup', function(g)
-	print('group setted ' .. g)
 	group = g
 end)
 
 RegisterNetEvent('esx_spectate:spectate')
 AddEventHandler('esx_spectate:spectate', function()
-
 	SetNuiFocus(true, true)
 
 	SendNUIMessage({
@@ -128,17 +123,14 @@ AddEventHandler('esx_spectate:spectate', function()
 		data = getPlayersList(),
 		player = GetPlayerServerId(PlayerId())
 	})
-
 end)
 
 RegisterNUICallback('select', function(data, cb)
-	print("select UI " .. json.encode(data))
 	spectate(data.id)
 	SetNuiFocus(false)
 end)
 
 RegisterNUICallback('close', function(data, cb)
-	print("closing UI")
 	SetNuiFocus(false)
 end)
 
@@ -162,7 +154,7 @@ Citizen.CreateThread(function()
 		if InSpectatorMode then
 
 			local targetPlayerId = GetPlayerFromServerId(TargetSpectate)
-			local playerPed	  = GetPlayerPed(-1)
+			local playerPed	  = PlayerPedId()
 			local targetPed	  = GetPlayerPed(targetPlayerId)
 			local coords	 = GetEntityCoords(targetPed)
 
@@ -174,30 +166,30 @@ Citizen.CreateThread(function()
 			end
 
 			if IsControlPressed(2, 241) then
-				radius = radius + 2.0;
+				radius = radius + 2.0
 			end
 
 			if IsControlPressed(2, 242) then
-				radius = radius - 2.0;
+				radius = radius - 2.0
 			end
 
 			if radius > -1 then
 				radius = -1
 			end
 
-			local xMagnitude = GetDisabledControlNormal(0, 1);
-			local yMagnitude = GetDisabledControlNormal(0, 2);
+			local xMagnitude = GetDisabledControlNormal(0, 1)
+			local yMagnitude = GetDisabledControlNormal(0, 2)
 
-			polarAngleDeg = polarAngleDeg + xMagnitude * 10;
+			polarAngleDeg = polarAngleDeg + xMagnitude * 10
 
 			if polarAngleDeg >= 360 then
 				polarAngleDeg = 0
 			end
 
-			azimuthAngleDeg = azimuthAngleDeg + yMagnitude * 10;
+			azimuthAngleDeg = azimuthAngleDeg + yMagnitude * 10
 
 			if azimuthAngleDeg >= 360 then
-				azimuthAngleDeg = 0;
+				azimuthAngleDeg = 0
 			end
 
 			local nextCamLocation = polar3DToWorld3D(coords, radius, polarAngleDeg, azimuthAngleDeg)
@@ -208,5 +200,5 @@ Citizen.CreateThread(function()
 
 		end
 
-  	end
+	end
 end)

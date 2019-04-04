@@ -1,7 +1,12 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,500,700');
-* {padding: 0; margin: 0; box-sizing: border-box; font-family: 'Open Sans', sans-serif;}
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: 'Open Sans', sans-serif;
+}
 
-.spectate{
+.spectate {
 	position: absolute;
 	color: #fff;
 	background-color: #3c3c3c;
@@ -12,55 +17,47 @@
 	display: none;
 }
 
-
-.spectate .header{
+.spectate .header {
 	background-color: #282828;
 	padding: 5px;
 	width: 100%;
 }
 
-.header h2{
+.header h2 {
 	display: inline-block;
 	font-size: 20px;
 }
 
-.header #close{
+.header #close {
 	float: right;
-	//vertical-align: middle;
 	position: relative;
 	top: 4px;
 	color: #f03a17;
 	font-size: 20px;
-	//margin-left: 20px;
 	cursor: pointer;
 }
 
-.spectate .users{
+.spectate .users {
 	padding: 5px;
-
 }
 
-
-.user{
+.user {
 	padding: 6px 5px;
 	font-weight: bold;
 	font-size: 18px;
 }
 
-.user .user-name{
+.user .user-name {
 	margin-left: 15px;
 }
 
-
-
-.user .user-actions{
+.user .user-actions {
 	float: right;
 	position: relative;
 	bottom: 1px;
 }
 
-
-button{
+button {
 	background-color: rgba(240, 58, 23, 0.2);
 	color: #fff;
 	padding: 3px 10px;

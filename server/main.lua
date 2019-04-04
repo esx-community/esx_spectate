@@ -15,5 +15,12 @@ end)
 
 RegisterServerEvent('esx_spectate:kick')
 AddEventHandler('esx_spectate:kick', function(target, msg)
-	DropPlayer(target, msg)
+	local xPlayer = ESX.GetPlayerFromId(source)
+
+	if xPlayer.getGroup() ~= 'user' then
+		DropPlayer(target, msg)
+	else
+		print(('esx_spectate: %s attempted to kick a player!'):format(xPlayer.identifier))
+		DropPlayer(source, "esx_spectate: you're not authorized to kick people dummy.")
+	end
 end)

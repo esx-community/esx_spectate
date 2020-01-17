@@ -1,12 +1,9 @@
-local InSpectatorMode = false
-local TargetSpectate
-local LastPosition
+local InSpectatorMode, ShowInfos = false, false
+local TargetSpectate, LastPosition, cam
 local polarAngleDeg = 0
 local azimuthAngleDeg = 90
 local radius = -3.5
-local cam
 local PlayerDate = {}
-local ShowInfos = false
 local group = "user"
 ESX = nil
 
@@ -199,6 +196,5 @@ Citizen.CreateThread(function()
 			SetEntityCoords(playerPed,  coords.x, coords.y, coords.z + 10)
 
 		end
-
 	end
 end)

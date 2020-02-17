@@ -2,18 +2,18 @@ ESX = nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
-TriggerEvent('es:addGroupCommand', 'spec', "admin", function(source, args, user)
-	TriggerClientEvent('esx_spectate:spectate', source, target)
-end, function(source, args, user)
-	TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Insufficienct permissions!")
-end)
+ESX.RegisterCommand('spec', 'admin', function(xPlayer, args, showError)
+	xPlayer.triggerEvent('esx_spectate:spectate', args.playerId)
+end, false, {help = 'Spectate a player', validate = true, arguments = {
+	{name = 'playerId', help = 'player id', type = 'playerId'}
+}})
 
 ESX.RegisterServerCallback('esx_spectate:getPlayerData', function(source, cb, id)
 	local xPlayer = ESX.GetPlayerFromId(id)
 	cb(xPlayer)
 end)
 
-RegisterServerEvent('esx_spectate:kick')
+RegisterNetEvent('esx_spectate:kick')
 AddEventHandler('esx_spectate:kick', function(target, msg)
 	local xPlayer = ESX.GetPlayerFromId(source)
 
@@ -21,6 +21,6 @@ AddEventHandler('esx_spectate:kick', function(target, msg)
 		DropPlayer(target, msg)
 	else
 		print(('esx_spectate: %s attempted to kick a player!'):format(xPlayer.identifier))
-		DropPlayer(source, "esx_spectate: you're not authorized to kick people dummy.")
+		DropPlayer(source, 'esx_spectate: you\'re not authorized to kick people.')
 	end
 end)

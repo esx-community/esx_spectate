@@ -123,8 +123,12 @@ AddEventHandler('esx_spectate:spectate', function()
 end)
 
 RegisterNUICallback('select', function(data, cb)
-	spectate(data.id)
 	SetNuiFocus(false)
+	ESX.TriggerServerCallback('esx_spectate:checkPermission', function(value)
+		if true then
+			spectate(data.id)
+		end
+	end)
 end)
 
 RegisterNUICallback('close', function(data, cb)

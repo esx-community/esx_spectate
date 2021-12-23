@@ -24,3 +24,15 @@ AddEventHandler('esx_spectate:kick', function(target, msg)
 		DropPlayer(source, 'esx_spectate: you\'re not authorized to kick people.')
 	end
 end)
+
+ESX.RegisterServerCallback('esx_spectate:checkPermission', function(source, cb)
+	local xPlayer = ESX.GetPlayerFromId(source)
+
+	if xPlayer.getGroup() ~= 'user' then
+		cb(true, false)
+	else
+		print(('esx_spectate: %s attempted to spectate a player!'):format(xPlayer.identifier))
+		DropPlayer(source, 'esx_spectate: you\'re not authorized to spectate people.')
+		cb(false)
+	end
+end)
